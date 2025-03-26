@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: oklch(0.704 0.14 182.503);
+  --color-dark: oklch(0.129 0.042 264.695);
+  --breakpoint-2xl: 1320px;
+}
+
+@layer base {
+  .container {
+    max-width: 100%;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
