@@ -19,14 +19,39 @@ window.onscroll = function() {
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("nav-menu");
 
+// Fungsi untuk menyesuaikan tampilan berdasarkan ukuran layar
 function checkScreenSize() {
     if (window.innerWidth >= 1024) {
+        // Tampilkan menu di desktop
         navMenu.classList.remove("hidden", "scale-y-0");
-        navMenu.classList.add("lg:block");
+        navMenu.classList.add("lg:block", "scale-y-100");
     } else {
-        navMenu.classList.add("hidden");
+        // Sembunyikan menu di mobile
+        navMenu.classList.add("hidden", "scale-y-0");
+        navMenu.classList.remove("lg:block", "scale-y-100");
     }
 }
+
+// Jalankan saat halaman pertama kali dimuat
+checkScreenSize();
+
+// Event listener untuk resize layar
+window.addEventListener("resize", checkScreenSize);
+
+// Event listener untuk klik tombol hamburger
+hamburger.addEventListener("click", () => {
+    if (navMenu.classList.contains("hidden")) {
+        // Buka menu dengan animasi
+        navMenu.classList.remove("hidden", "scale-y-0");
+        navMenu.classList.add("scale-y-100");
+    } else {
+        // Tutup menu dengan delay agar animasi terlihat
+        navMenu.classList.remove("scale-y-100");
+        setTimeout(() => {
+            navMenu.classList.add("hidden", "scale-y-0");
+        }, 300); // Delay untuk transisi agar tidak langsung hilang
+    }
+});
 
 document.addEventListener("DOMContentLoaded", checkScreenSize);
 
