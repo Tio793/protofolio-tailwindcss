@@ -29,7 +29,6 @@ function checkScreenSize() {
 }
 
 document.addEventListener("DOMContentLoaded", checkScreenSize);
-
 window.addEventListener("resize", checkScreenSize);
 
 hamburger.addEventListener("click", function () {
@@ -49,6 +48,18 @@ hamburger.addEventListener("click", function () {
                 navMenu.classList.add("hidden");
             }, 300);
         }
+    }
+});
+
+// Tutup navigasi saat scroll
+window.addEventListener("scroll", function () {
+    if (window.innerWidth < 1024 && !navMenu.classList.contains("hidden")) {
+        navMenu.classList.remove("scale-y-100");
+        navMenu.classList.add("scale-y-0");
+        setTimeout(() => {
+            navMenu.classList.add("hidden");
+        }, 300);
+        hamburger.classList.remove("hamburger-active");
     }
 });
 

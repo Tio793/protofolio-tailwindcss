@@ -258,6 +258,18 @@
   .sticky {
     position: sticky;
   }
+  .-top-0 {
+    top: calc(var(--spacing) * -0);
+  }
+  .-top-10 {
+    top: calc(var(--spacing) * -10);
+  }
+  .-top-30 {
+    top: calc(var(--spacing) * -30);
+  }
+  .-top-50 {
+    top: calc(var(--spacing) * -50);
+  }
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
@@ -272,6 +284,9 @@
   }
   .left-0 {
     left: calc(var(--spacing) * 0);
+  }
+  .left-1 {
+    left: calc(var(--spacing) * 1);
   }
   .left-1\/2 {
     left: calc(1/2 * 100%);
@@ -534,11 +549,29 @@
   .h-9 {
     height: calc(var(--spacing) * 9);
   }
+  .h-10 {
+    height: calc(var(--spacing) * 10);
+  }
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
   .h-32 {
     height: calc(var(--spacing) * 32);
   }
+  .h-45 {
+    height: calc(var(--spacing) * 45);
+  }
+  .h-auto {
+    height: auto;
+  }
   .h-screen {
     height: 100vh;
+  }
+  .max-h-15 {
+    max-height: calc(var(--spacing) * 15);
+  }
+  .max-h-45 {
+    max-height: calc(var(--spacing) * 45);
   }
   .max-h-none {
     max-height: none;
@@ -549,17 +582,44 @@
   .min-h-screen {
     min-height: 100vh;
   }
+  .w-1 {
+    width: calc(var(--spacing) * 1);
+  }
   .w-1\/2 {
     width: calc(1/2 * 100%);
   }
   .w-9 {
     width: calc(var(--spacing) * 9);
   }
+  .w-10 {
+    width: calc(var(--spacing) * 10);
+  }
+  .w-32 {
+    width: calc(var(--spacing) * 32);
+  }
+  .w-45 {
+    width: calc(var(--spacing) * 45);
+  }
+  .w-auto {
+    width: auto;
+  }
   .w-full {
     width: 100%;
   }
   .w-screen {
     width: 100vw;
+  }
+  .max-w-1 {
+    max-width: calc(var(--spacing) * 1);
+  }
+  .max-w-15 {
+    max-width: calc(var(--spacing) * 15);
+  }
+  .max-w-45 {
+    max-width: calc(var(--spacing) * 45);
+  }
+  .max-w-\[100vw\] {
+    max-width: 100vw;
   }
   .max-w-\[250px\] {
     max-width: 250px;
@@ -671,6 +731,10 @@
   .translate-full {
     --tw-translate-x: 100%;
     --tw-translate-y: 100%;
+    translate: var(--tw-translate-x) var(--tw-translate-y);
+  }
+  .-translate-x-1 {
+    --tw-translate-x: calc(var(--spacing) * -1);
     translate: var(--tw-translate-x) var(--tw-translate-y);
   }
   .-translate-x-1\/2 {
@@ -1263,9 +1327,6 @@
   }
   .bg-slate-700 {
     background-color: var(--color-slate-700);
-  }
-  .bg-transparent {
-    background-color: transparent;
   }
   .bg-white {
     background-color: var(--color-white);
@@ -2220,6 +2281,43 @@
       outline-style: none;
     }
   }
+  .active\:bg-primary {
+    &:active {
+      background-color: var(--color-primary);
+    }
+  }
+  .active\:text-primary {
+    &:active {
+      color: var(--color-primary);
+    }
+  }
+  .active\:text-white {
+    &:active {
+      color: var(--color-white);
+    }
+  }
+  .active\:opacity-80 {
+    &:active {
+      opacity: 80%;
+    }
+  }
+  .active\:opacity-100 {
+    &:active {
+      opacity: 100%;
+    }
+  }
+  .active\:shadow-lg {
+    &:active {
+      --tw-shadow: 0 10px 15px -3px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 4px 6px -4px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
+      box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow);
+    }
+  }
+  .active\:grayscale-0 {
+    &:active {
+      --tw-grayscale: grayscale(0%);
+      filter: var(--tw-blur,) var(--tw-brightness,) var(--tw-contrast,) var(--tw-grayscale,) var(--tw-hue-rotate,) var(--tw-invert,) var(--tw-saturate,) var(--tw-sepia,) var(--tw-drop-shadow,);
+    }
+  }
   .sm\:min-w-\[80px\] {
     @media (width >= 40rem) {
       min-width: 80px;
@@ -2301,6 +2399,11 @@
       display: none;
     }
   }
+  .lg\:max-h-45 {
+    @media (width >= 64rem) {
+      max-height: calc(var(--spacing) * 45);
+    }
+  }
   .lg\:w-1\/2 {
     @media (width >= 64rem) {
       width: calc(1/2 * 100%);
@@ -2309,6 +2412,11 @@
   .lg\:w-2\/3 {
     @media (width >= 64rem) {
       width: calc(2/3 * 100%);
+    }
+  }
+  .lg\:max-w-45 {
+    @media (width >= 64rem) {
+      max-width: calc(var(--spacing) * 45);
     }
   }
   .lg\:max-w-\[80px\] {
@@ -2325,11 +2433,6 @@
     @media (width >= 64rem) {
       --tw-scale-y: 100%;
       scale: var(--tw-scale-x) var(--tw-scale-y);
-    }
-  }
-  .lg\:justify-between {
-    @media (width >= 64rem) {
-      justify-content: space-between;
     }
   }
   .lg\:rounded-none {
@@ -2407,7 +2510,7 @@
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(130px);
   }
   to {
     opacity: 1;
