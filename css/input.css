@@ -70,8 +70,6 @@
   }
 }
 
-
-
 @layer base {
   .container {
     max-width: 100%;
@@ -114,6 +112,15 @@
   .hamburger-active > span:nth-child(3) {
     @apply -rotate-45;
   }
+
+  .hamburger-line {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #333;
+    margin: 5px auto;
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  }
 }
 
 body {
@@ -130,7 +137,6 @@ body {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
-
 
 .text-up {
   opacity: 0;
