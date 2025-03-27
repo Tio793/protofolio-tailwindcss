@@ -5,7 +5,72 @@
   --color-dark: oklch(0.129 0.042 264.695);
   --color-secondary: oklch(0.554 0.046 257.417);
   --breakpoint-2xl: 1320px;
+  --animate-fadeInUp: fadeInUp 3s ease-out forwards;
+  --animate-spinReverse: spinReverse 1s linear infinite;
+  --animate-spin: spin 1s linear infinite;
+  --animate-spinUp: spinUp 1s linear infinite;
 }
+
+/* animasi */
+
+@keyframes spinReverse {
+  to {
+    transform: rotate(-360deg);
+  }
+}
+@keyframes spinUp {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUpText {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+@keyframes blink {
+  50% {
+    border-color: transparent;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+
 
 @layer base {
   .container {
@@ -14,6 +79,17 @@
     padding-right: 16px;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  @keyframes scaleUp {
+    from {
+      opacity: 0;
+      transform: scaleY(0);
+    }
+    to {
+      opacity: 1;
+      transform: scaleY(1);
+    }
   }
 }
 
@@ -42,4 +118,44 @@
 
 body {
   font-family: "Inter", sans-serif;
+}
+
+.text-hidden {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.text-show {
+  opacity: 1 !important;
+  transform: translateY(0) !important;
+}
+
+
+.text-up {
+  opacity: 0;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: opacity 1.5s ease-out, transform 1.5s ease-out;
+}
+
+.text-lead {
+  opacity: 1 !important;
+  transform: scaleY(1) !important;
+}
+
+.marquee-container {
+  overflow: hidden;
+  white-space: nowrap;
+  position: relative;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 4rem; /* Jarak antar logo */
+  animation: marquee 15s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused; /* Berhenti saat dihover */
 }
