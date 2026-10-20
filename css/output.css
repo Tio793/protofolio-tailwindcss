@@ -3005,3 +3005,7 @@ body {
 
 .poster-trigger { cursor: pointer; }
 .poster-modal { position: fixed; inset: 0; margin: auto; }
+
+html, body { width: 100%; max-width: 100%; overflow-x: clip; }
+.hero-orbit { width: min(400px, calc(100vw - 32px)); max-width: 100%; }
+.hero-orbit svg { display: block; width: 100%; height: auto; }

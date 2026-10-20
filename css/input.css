@@ -127,6 +127,24 @@ body {
   font-family: "Inter", sans-serif;
 }
 
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: clip;
+}
+
+.hero-orbit {
+  width: min(400px, calc(100vw - 32px));
+  max-width: 100%;
+}
+
+.hero-orbit svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .text-hidden {
   opacity: 0;
   transform: translateY(20px);

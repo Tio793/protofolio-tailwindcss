@@ -73,7 +73,7 @@ let posterTriggerToRestore = null;
 
 document.querySelectorAll("[data-poster-trigger]").forEach((trigger) => {
   trigger.addEventListener("click", () => {
-    const card = trigger.closest(".md-12");
+    const card = trigger.closest("[data-poster-card]");
     const image = trigger.querySelector("img");
     posterTriggerToRestore = trigger;
     posterModalImage.src = image.currentSrc || image.src;
