@@ -1,10 +1,55 @@
 const header = document.querySelector("header");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("nav-menu");
+let menuTransitionId = 0;
+let menuCloseTimer;
 
-function closeMenu() {
-  navMenu.classList.add("hidden", "scale-y-0");
+function setMenuButtonState(isOpen) {
+  hamburger.classList.toggle("hamburger-active", isOpen);
+  hamburger.setAttribute("aria-expanded", String(isOpen));
+  hamburger.setAttribute("aria-label", isOpen ? "Tutup menu navigasi" : "Buka menu navigasi");
+}
+
+function openMenu() {
+  const transitionId = ++menuTransitionId;
+  window.clearTimeout(menuCloseTimer);
+  navMenu.classList.remove("hidden", "scale-y-100");
+  navMenu.classList.add("scale-y-0");
+  setMenuButtonState(true);
+
+  // Let the collapsed state render before expanding so the transition can run.
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if (transitionId === menuTransitionId) {
+        navMenu.classList.remove("scale-y-0");
+        navMenu.classList.add("scale-y-100");
+      }
+    });
+  });
+}
+
+function closeMenu({ immediate = false } = {}) {
+  const transitionId = ++menuTransitionId;
+  window.clearTimeout(menuCloseTimer);
   navMenu.classList.remove("scale-y-100");
+  navMenu.classList.add("scale-y-0");
+  setMenuButtonState(false);
+
+  if (immediate || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    navMenu.classList.add("hidden");
+    return;
+  }
+
+  menuCloseTimer = window.setTimeout(() => {
+    if (transitionId === menuTransitionId) navMenu.classList.add("hidden");
+  }, 300);
+}
+
+function showDesktopMenu() {
+  ++menuTransitionId;
+  window.clearTimeout(menuCloseTimer);
+  navMenu.classList.remove("hidden", "scale-y-0");
+  navMenu.classList.add("scale-y-100");
   hamburger.classList.remove("hamburger-active");
   hamburger.setAttribute("aria-expanded", "false");
   hamburger.setAttribute("aria-label", "Buka menu navigasi");
@@ -13,10 +58,9 @@ function closeMenu() {
 function updateHeader() {
   header.classList.toggle("navbar-fixed", window.scrollY > 0);
   if (window.innerWidth >= 1024) {
-    navMenu.classList.remove("hidden", "scale-y-0");
-    navMenu.classList.add("scale-y-100");
+    showDesktopMenu();
   } else if (!hamburger.classList.contains("hamburger-active")) {
-    closeMenu();
+    closeMenu({ immediate: true });
   }
 }
 
@@ -26,12 +70,7 @@ hamburger.addEventListener("click", () => {
     closeMenu();
     return;
   }
-
-  navMenu.classList.remove("hidden", "scale-y-0");
-  navMenu.classList.add("scale-y-100");
-  hamburger.classList.add("hamburger-active");
-  hamburger.setAttribute("aria-expanded", "true");
-  hamburger.setAttribute("aria-label", "Tutup menu navigasi");
+  openMenu();
 });
 
 navMenu.querySelectorAll("a").forEach((link) => {
