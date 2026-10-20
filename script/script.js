@@ -1,127 +1,94 @@
-// Navbar Fixed
-
-window.onscroll = function() {
-    const header = document.querySelector("header");
-    const fixedNav = header.offsetTop;
-
-    if (window.pageYOffset > fixedNav) {
-        header.classList.add("navbar-fixed");
-    } else {
-        header.classList.remove("navbar-fixed");
-    }
-}
-
-
-
-
-// Hamburger
-
+const header = document.querySelector("header");
 const hamburger = document.getElementById("hamburger");
 const navMenu = document.getElementById("nav-menu");
 
-function checkScreenSize() {
-    if (window.innerWidth >= 1024) {
-        navMenu.classList.remove("hidden", "scale-y-0");
-        navMenu.classList.add("lg:block");
-    } else {
-        navMenu.classList.add("hidden");
-    }
+function closeMenu() {
+  navMenu.classList.add("hidden", "scale-y-0");
+  navMenu.classList.remove("scale-y-100");
+  hamburger.classList.remove("hamburger-active");
+  hamburger.setAttribute("aria-expanded", "false");
+  hamburger.setAttribute("aria-label", "Buka menu navigasi");
 }
 
-document.addEventListener("DOMContentLoaded", checkScreenSize);
-window.addEventListener("resize", checkScreenSize);
+function updateHeader() {
+  header.classList.toggle("navbar-fixed", window.scrollY > 0);
+  if (window.innerWidth >= 1024) {
+    navMenu.classList.remove("hidden", "scale-y-0");
+    navMenu.classList.add("scale-y-100");
+  } else if (!hamburger.classList.contains("hamburger-active")) {
+    closeMenu();
+  }
+}
 
-hamburger.addEventListener("click", function () {
-    this.classList.toggle("hamburger-active");
+hamburger.addEventListener("click", () => {
+  const isOpen = hamburger.getAttribute("aria-expanded") === "true";
+  if (isOpen) {
+    closeMenu();
+    return;
+  }
 
-    if (window.innerWidth < 1024) { 
-        if (navMenu.classList.contains("hidden")) {
-            navMenu.classList.remove("hidden");
-            setTimeout(() => {
-                navMenu.classList.remove("scale-y-0");
-                navMenu.classList.add("scale-y-100");
-            }, 10);
-        } else {
-            navMenu.classList.remove("scale-y-100");
-            navMenu.classList.add("scale-y-0");
-            setTimeout(() => {
-                navMenu.classList.add("hidden");
-            }, 300);
-        }
-    }
+  navMenu.classList.remove("hidden", "scale-y-0");
+  navMenu.classList.add("scale-y-100");
+  hamburger.classList.add("hamburger-active");
+  hamburger.setAttribute("aria-expanded", "true");
+  hamburger.setAttribute("aria-label", "Tutup menu navigasi");
 });
 
-// Tutup navigasi saat scroll
-window.addEventListener("scroll", function () {
-    if (window.innerWidth < 1024 && !navMenu.classList.contains("hidden")) {
-        navMenu.classList.remove("scale-y-100");
-        navMenu.classList.add("scale-y-0");
-        setTimeout(() => {
-            navMenu.classList.add("hidden");
-        }, 300);
-        hamburger.classList.remove("hamburger-active");
-    }
+navMenu.querySelectorAll("a").forEach((link) => {
+  link.addEventListener("click", () => {
+    if (window.innerWidth < 1024) closeMenu();
+  });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const texts = document.querySelectorAll(".text-hidden");
+window.addEventListener("scroll", updateHeader, { passive: true });
+window.addEventListener("resize", updateHeader);
+updateHeader();
 
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("text-show");
-                observer.unobserve(entry.target); // Animasi hanya terjadi sekali
-            }
-        });
-    }, { threshold: 0.2 });
-
-    texts.forEach(text => {
-        observer.observe(text);
+// Keep animated content readable when IntersectionObserver is unavailable.
+if ("IntersectionObserver" in window) {
+  const observer = new IntersectionObserver((entries, activeObserver) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("text-show", "text-lead");
+        activeObserver.unobserve(entry.target);
+      }
     });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll(".text-hidden, .text-up").forEach((element) => {
+    observer.observe(element);
+  });
+} else {
+  document.querySelectorAll(".text-hidden, .text-up").forEach((element) => {
+    element.classList.add("text-show", "text-lead");
+  });
+}
+
+const posterModal = document.getElementById("poster-modal");
+const posterModalImage = document.getElementById("poster-modal-image");
+const posterModalTitle = document.getElementById("poster-modal-title");
+const posterModalDescription = document.getElementById("poster-modal-description");
+const posterCloseButton = posterModal.querySelector("[data-poster-close]");
+let posterTriggerToRestore = null;
+
+document.querySelectorAll("[data-poster-trigger]").forEach((trigger) => {
+  trigger.addEventListener("click", () => {
+    const card = trigger.closest(".md-12");
+    const image = trigger.querySelector("img");
+    posterTriggerToRestore = trigger;
+    posterModalImage.src = image.currentSrc || image.src;
+    posterModalImage.alt = image.alt;
+    posterModalTitle.textContent = card.querySelector("h3").textContent.trim();
+    posterModalDescription.textContent = card.querySelector("p").textContent.trim();
+    posterModal.showModal();
+    posterCloseButton.focus();
+  });
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const text1 = "Hallo Teman Teman 👋, saya";
-    const text2 = "Prasthio Karim";
-    const typingText = document.getElementById("typing-text");
-    const typingName = document.getElementById("typing-name");
-    let index1 = 0;
-    let index2 = 0;
-
-    function typeWriter1() {
-        if (index1 < text1.length) {
-            typingText.innerHTML += text1.charAt(index1);
-            index1++;
-            setTimeout(typeWriter1, 100); // Kecepatan mengetik
-        } else {
-            setTimeout(typeWriter2, 500); // Tunggu 500ms sebelum mengetik teks kedua
-        }
-    }
-
-    function typeWriter2() {
-        if (index2 < text2.length) {
-            typingName.innerHTML += text2.charAt(index2);
-            index2++;
-            setTimeout(typeWriter2, 100);
-        }
-    }
-
-    typeWriter1();
+posterCloseButton.addEventListener("click", () => posterModal.close());
+posterModal.addEventListener("click", (event) => {
+  if (event.target === posterModal) posterModal.close();
 });
-
-document.addEventListener("DOMContentLoaded", function () {
-    const texts = document.querySelectorAll(".text-up");
-
-    const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add("text-lead");
-                observer.unobserve(entry.target); // Animasi hanya terjadi sekali
-            }
-        });
-    }, { threshold: 0.2 });
-
-    texts.forEach(text => {
-        observer.observe(text);
-    });
+posterModal.addEventListener("close", () => {
+  if (posterTriggerToRestore) posterTriggerToRestore.focus();
 });
